@@ -33,7 +33,7 @@ namespace Notes.API.Controllers
         [HttpPost]
         public Note Post([FromBody] Note note)
         {
-            note.Id = _notes.Count + 1;
+            note.Id = _notes.Max(x => x.Id) + 1;
             _notes.Add(note);
 
             return note;
