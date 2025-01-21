@@ -31,9 +31,12 @@ namespace Notes.API.Controllers
 
         // POST api/<NotesController>
         [HttpPost]
-        public void Post([FromBody] Note note)
+        public Note Post([FromBody] Note note)
         {
+            note.Id = _notes.Count;
             _notes.Add(note);
+
+            return note;
         }
 
         // PUT api/<NotesController>/5
