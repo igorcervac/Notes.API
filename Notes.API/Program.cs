@@ -1,3 +1,5 @@
+using Microsoft.EntityFrameworkCore;
+using Notes.API.Models;
 
 namespace Notes.API
 {
@@ -23,6 +25,7 @@ namespace Notes.API
                     }
                 )
             );
+            builder.Services.AddDbContext<Subscription1DbContext>(opts => opts.UseSqlServer("Server=.;Database=Subscription1DB;Integrated security=True;Encrypt=False"));
 
             var app = builder.Build();
 
