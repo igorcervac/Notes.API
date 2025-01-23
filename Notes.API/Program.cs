@@ -25,7 +25,9 @@ namespace Notes.API
                     }
                 )
             );
-            builder.Services.AddDbContext<Subscription1DbContext>(opts => opts.UseSqlServer("Server=.;Database=Subscription1DB;Integrated security=True;Encrypt=False"));
+
+            var connectionString = Environment.GetEnvironmentVariable("SQLAZURECONNSTR_Notes");
+            builder.Services.AddDbContext<Subscription1DbContext>(opts => opts.UseSqlServer(connectionString));
 
             var app = builder.Build();
 
