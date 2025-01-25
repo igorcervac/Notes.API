@@ -8,13 +8,13 @@ public partial class Subscription1DbContext : DbContext
 
     public Subscription1DbContext()
     {
-        _connectionString = Environment.GetEnvironmentVariable("SQLAZURECONNSTR_Notes");
+        _connectionString = Environment.GetEnvironmentVariable("SQLAZURECONNSTR_NotesDB");
     }
 
     public Subscription1DbContext(DbContextOptions<Subscription1DbContext> options)
         : base(options)
     {
-        _connectionString = Environment.GetEnvironmentVariable("SQLAZURECONNSTR_Notes");
+        _connectionString = Environment.GetEnvironmentVariable("SQLAZURECONNSTR_NotesDB");
     }
 
     public virtual DbSet<Note> Notes { get; set; }
