@@ -15,18 +15,21 @@ namespace Notes.API
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+
+            var uiUrl = Environment.GetEnvironmentVariable("NotesUI");
+
             builder.Services.AddCors(opts => opts.AddDefaultPolicy
                 (
                     p =>
                     {
-                        p.AllowAnyOrigin();
+                        p.WithOrigins(uiUrl);
                         p.AllowAnyMethod();
                         p.AllowAnyHeader();
                     }
                 )
             );
 
-            var connectionString = Environment.GetEnvironmentVariable("SQLAZURECONNSTR_Notes");
+            var connectionString = Environment.GetEnvironmentVariable("SQLAZURECONNSTR_NotesDB");
             builder.Services.AddDbContext<Subscription1DbContext>(opts => opts.UseSqlServer(connectionString));
 
             var app = builder.Build();
