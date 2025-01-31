@@ -24,10 +24,9 @@ namespace Notes.API.Controllers
 
         // GET: api/<NotesController>
         [HttpGet]
-        public IEnumerable<Note> Get()
+        public ActionResult<IEnumerable<Note>> Get()
         {
-            //return _notes;
-            return _context.Notes;
+            return Ok(_context.Notes);
         }
 
         //// GET api/<NotesController>/5
@@ -39,37 +38,58 @@ namespace Notes.API.Controllers
 
         // POST api/<NotesController>
         [HttpPost]
-        public Note Post([FromBody] Note note)
+        public ActionResult<Note> Post([FromBody] Note note)
         {
             //note.Id = _notes.Max(x => x.Id) + 1;
             //_notes.Add(note);
             _context.Notes.Add(note);
             _context.SaveChanges();
 
-            return note;
+            return Ok(note);
         }
 
         // PUT api/<NotesController>/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] Note note)
+        public IActionResult Put(int id, [FromBody] Note note)
         {
             //var noteToUpdate = _notes.Find(x => x.Id == id);
+            if (id != note.Id)
+            {
+                return BadRequest();
+            }
+
             var noteToUpdate = _context.Notes.Find(id);
+
+            if (noteToUpdate == null)
+            {
+                return NotFound();
+            }
+
             noteToUpdate.Title = note.Title;
             noteToUpdate.Content = note.Content;
             _context.SaveChanges();
+
+            return NoContent();
 
         }
 
         // DELETE api/<NotesController>/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public IActionResult Delete(int id)
         {
             //var noteToDelete = _notes.Find(x => x.Id == id);
             var noteToDelete = _context.Notes.Find(id);
+
+            if (noteToDelete == null)
+            {
+                return NotFound();
+            }
+
             //_notes.Remove(noteToDelete);
             _context.Notes.Remove(noteToDelete);
             _context.SaveChanges();
+
+            return NoContent() ;
         }
     }
 }
