@@ -22,7 +22,8 @@ namespace Notes.API
                 (
                     p =>
                     {
-                        p.WithOrigins(uiUrl);
+                        //p.WithOrigins(uiUrl);
+                        p.AllowAnyOrigin();
                         p.AllowAnyMethod();
                         p.AllowAnyHeader();
                     }
