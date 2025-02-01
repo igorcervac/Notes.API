@@ -24,17 +24,23 @@ namespace Notes.API.Controllers
 
         // GET: api/<NotesController>
         [HttpGet]
-        public ActionResult<IEnumerable<Note>> Get()
+        public ActionResult<IEnumerable<Note>> GetAll()
         {
             return Ok(_context.Notes);
         }
 
-        //// GET api/<NotesController>/5
-        //[HttpGet("{id}")]
-        //public string Get(int id)
-        //{
-        //    return "value";
-        //}
+        // GET api/<NotesController>/5
+        [HttpGet("{id}")]
+        public IActionResult GetById(int id)
+        {
+            var note = _context.Notes.Find(id);
+            if (note == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(note);
+        }
 
         // POST api/<NotesController>
         [HttpPost]
@@ -45,7 +51,7 @@ namespace Notes.API.Controllers
             _context.Notes.Add(note);
             _context.SaveChanges();
 
-            return Ok(note);
+            return CreatedAtAction(nameof(GetById), new { note.Id }, note);
         }
 
         // PUT api/<NotesController>/5
