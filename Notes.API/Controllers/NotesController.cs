@@ -31,9 +31,9 @@ namespace Notes.API.Controllers
 
         // GET api/<NotesController>/5
         [HttpGet("{id}")]
-        public IActionResult GetById(int id)
+        public async Task<IActionResult> GetById(int id)
         {
-            var note = _context.Notes.Find(id);
+            var note = await _context.Notes.FindAsync(id);
             if (note == null)
             {
                 return NotFound();
@@ -44,19 +44,19 @@ namespace Notes.API.Controllers
 
         // POST api/<NotesController>
         [HttpPost]
-        public ActionResult<Note> Post([FromBody] Note note)
+        public async Task<ActionResult<Note>> Post([FromBody] Note note)
         {
             //note.Id = _notes.Max(x => x.Id) + 1;
             //_notes.Add(note);
             _context.Notes.Add(note);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
 
             return CreatedAtAction(nameof(GetById), new { note.Id }, note);
         }
 
         // PUT api/<NotesController>/5
         [HttpPut("{id}")]
-        public IActionResult Put(int id, [FromBody] Note note)
+        public async Task<IActionResult> Put(int id, [FromBody] Note note)
         {
             //var noteToUpdate = _notes.Find(x => x.Id == id);
             if (id != note.Id)
@@ -64,7 +64,7 @@ namespace Notes.API.Controllers
                 return BadRequest();
             }
 
-            var noteToUpdate = _context.Notes.Find(id);
+            var noteToUpdate = await _context.Notes.FindAsync(id);
 
             if (noteToUpdate == null)
             {
@@ -73,7 +73,7 @@ namespace Notes.API.Controllers
 
             noteToUpdate.Title = note.Title;
             noteToUpdate.Content = note.Content;
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
 
             return NoContent();
 
@@ -81,10 +81,10 @@ namespace Notes.API.Controllers
 
         // DELETE api/<NotesController>/5
         [HttpDelete("{id}")]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
             //var noteToDelete = _notes.Find(x => x.Id == id);
-            var noteToDelete = _context.Notes.Find(id);
+            var noteToDelete = await _context.Notes.FindAsync(id);
 
             if (noteToDelete == null)
             {
@@ -93,7 +93,7 @@ namespace Notes.API.Controllers
 
             //_notes.Remove(noteToDelete);
             _context.Notes.Remove(noteToDelete);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
 
             return NoContent() ;
         }
