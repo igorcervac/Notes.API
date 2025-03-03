@@ -3,12 +3,9 @@ namespace Notes.API.Models
 {
     public class InMemoryNoteRepository : INoteRepository
     {
-        private static List<Note> _notes = new List<Note>
-        {
-            new Note{ Id = 1, Title = "Note", Content = "Content"},
-            new Note{ Id = 2, Title = "Note 2", Content = "Content 2"},
-            new Note{ Id = 3, Title = "Note 3", Content = "Content 3"}
-        };
+        private static List<Note> _notes = Enumerable.Range(1, 5)
+                .Select(x => new Note { Id = x, Title = $"Title {x}", Content = $"Content {x}" })
+                .ToList();
 
         public IEnumerable<Note> GetAll()
         {
@@ -37,9 +34,11 @@ namespace Notes.API.Models
 
         public async Task UpdateAsync(Note note)
         {
-            var noteToUpdate = _notes.Find(x => x.Id == note.Id);
+            var noteToUpdate = await GetByIdAsync(note.Id);
+
             noteToUpdate.Title = note.Title;
             noteToUpdate.Content = note.Content;
+
             await Task.Delay(0);
         }
 

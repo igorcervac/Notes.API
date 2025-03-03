@@ -32,7 +32,18 @@ namespace Notes.API
             var connectionString = Environment.GetEnvironmentVariable("SQLAZURECONNSTR_NotesDB");
             builder.Services.AddDbContext<Subscription1DbContext>(opts => opts.UseSqlServer(connectionString));
 
-            builder.Services.AddScoped<INoteRepository, NoteRepository>();
+            var inMemoryString = Environment.GetEnvironmentVariable("NotesInMemory");
+            bool inMemory = false;
+            bool.TryParse(inMemoryString, out inMemory);
+
+            if (inMemory)
+            {
+                builder.Services.AddScoped<INoteRepository, InMemoryNoteRepository>();
+            }
+            else
+            {
+                builder.Services.AddScoped<INoteRepository, NoteRepository>();
+            }
 
             var app = builder.Build();
 
