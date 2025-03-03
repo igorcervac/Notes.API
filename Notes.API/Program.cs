@@ -32,6 +32,8 @@ namespace Notes.API
             var connectionString = Environment.GetEnvironmentVariable("SQLAZURECONNSTR_NotesDB");
             builder.Services.AddDbContext<Subscription1DbContext>(opts => opts.UseSqlServer(connectionString));
 
+            builder.Services.AddScoped<INoteRepository, NoteRepository>();
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
