@@ -38,11 +38,11 @@ namespace Notes.API
 
             if (inMemory)
             {
-                builder.Services.AddScoped<INoteRepository, InMemoryNoteRepository>();
+                builder.Services.AddScoped<IGenericRepository<Note>, InMemoryGenericRepository<Note>>();
             }
             else
             {
-                builder.Services.AddScoped<INoteRepository, NoteRepository>();
+                builder.Services.AddScoped<IGenericRepository<Note>, NoteRepository>();
             }
 
             var app = builder.Build();

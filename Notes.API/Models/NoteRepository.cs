@@ -1,6 +1,6 @@
 ﻿namespace Notes.API.Models
 {
-    public class NoteRepository : INoteRepository
+    public class NoteRepository : IGenericRepository<Note>
     {
         private readonly Subscription1DbContext _context;
 
@@ -36,9 +36,7 @@
 
         public async Task UpdateAsync(Note note)
         {
-            var noteToUpdate = _context.Notes.Find(note.Id);
-            noteToUpdate.Title = note.Title;
-            noteToUpdate.Content = note.Content;
+            _context.Entry(note).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
             await _context.SaveChangesAsync();
         }
 
