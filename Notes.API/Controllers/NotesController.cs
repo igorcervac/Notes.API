@@ -9,9 +9,9 @@ namespace Notes.API.Controllers
     [ApiController]
     public class NotesController : ControllerBase
     {
-        private readonly INoteRepository _noteRepository;
+        private readonly IGenericRepository<Note> _noteRepository;
 
-        public NotesController(INoteRepository noteRepository)
+        public NotesController(IGenericRepository<Note> noteRepository)
         {
             _noteRepository = noteRepository;
         }
@@ -54,14 +54,12 @@ namespace Notes.API.Controllers
                 return BadRequest();
             }
 
-            var noteToUpdate = await _noteRepository.GetByIdAsync(id);
-
-            if (noteToUpdate == null)
+            if (await _noteRepository.GetByIdAsync(note.Id) == null)
             {
                 return NotFound();
             }
 
-            await _noteRepository.UpdateAsync(noteToUpdate);  
+            await _noteRepository.UpdateAsync(note);  
 
             return NoContent();
 

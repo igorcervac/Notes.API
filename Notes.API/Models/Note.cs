@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿namespace Notes.API.Models;
 
-namespace Notes.API.Models;
-
-public partial class Note
+public partial class Note: IEntity
 {
     public int Id { get; set; }
 
