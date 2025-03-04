@@ -1,4 +1,6 @@
-﻿namespace Notes.API.Models
+﻿using Microsoft.EntityFrameworkCore;
+
+namespace Notes.API.Models
 {
     public class NoteRepository : IGenericRepository<Note>
     {
@@ -11,12 +13,12 @@
 
         public IEnumerable<Note> GetAll()
         {
-            return _context.Notes;
+            return _context.Notes.AsNoTracking();
         }
 
         public async Task<Note> GetByIdAsync(int id)
         {
-            var note = await _context.Notes.FindAsync(id);
+            var note = await _context.Notes.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
             return note;
         }
 
@@ -37,7 +39,7 @@
         public async Task UpdateAsync(Note note)
         {
             _context.Notes.Attach(note);
-            _context.Entry(note).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+            _context.Entry(note).State = EntityState.Modified;
             await _context.SaveChangesAsync();
         }
 
