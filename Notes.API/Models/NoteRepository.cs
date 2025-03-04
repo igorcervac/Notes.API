@@ -36,6 +36,7 @@
 
         public async Task UpdateAsync(Note note)
         {
+            _context.Notes.Attach(note);
             _context.Entry(note).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
             await _context.SaveChangesAsync();
         }
