@@ -38,7 +38,7 @@ namespace Notes.API
 
             if (inMemory)
             {
-                builder.Services.AddScoped<IGenericRepository<Note>, InMemoryGenericRepository<Note>>();
+                builder.Services.AddScoped<IGenericRepository<Note>, InMemoryNoteRepository>();
             }
             else
             {

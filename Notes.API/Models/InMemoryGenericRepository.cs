@@ -1,9 +1,22 @@
-﻿
-namespace Notes.API.Models
+﻿namespace Notes.API.Models
 {
-    public class InMemoryGenericRepository<T> : IGenericRepository<T> where T: IEntity
+    public abstract class InMemoryGenericRepository<T> : IGenericRepository<T> where T : IEntity
     {
-        private static List<T> _objects = new List<T>();
+        protected static List<T> _objects = new List<T>();
+
+        public async Task<T> AddAsync(T entity)
+        {
+            var maxId = _objects.Any() ? _objects.Max(x => x.Id) : 0;
+            entity.Id = maxId + 1;
+            _objects.Add(entity);
+            return await Task.FromResult(entity);
+        }
+
+        public async Task DeleteAsync(T entity)
+        {
+            _objects.Remove(entity);
+            await Task.Delay(0);
+        }
 
         public IEnumerable<T> GetAll()
         {
@@ -16,24 +29,6 @@ namespace Notes.API.Models
             return await Task.FromResult(@object);
         }
 
-        public async Task<T> AddAsync(T @object)
-        {
-            @object.Id = (_objects.Any() ? _objects.Max(x => x.Id) : 0) + 1;
-            _objects.Add(@object);
-
-            return await Task.FromResult(@object);
-        }
-
-        public async Task DeleteAsync(T @object)
-        {
-            _objects.Remove(@object);
-            await Task.Delay(0);
-        }
-
-        public async Task UpdateAsync(T note)
-        {
-            await Task.Delay(0);
-        }
-
+        public abstract Task UpdateAsync(T entity);
     }
 }
